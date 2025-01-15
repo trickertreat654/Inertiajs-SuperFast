@@ -48,12 +48,12 @@ Route::get('/posts2', function () {
         'user' => request()->header('X-Inertia') ?  
            fn () => User::first() :
             Inertia::defer(fn () => User::first(), 'nameGroup'),
-        'posts' => request()->header('X-Inertia') ? 
+        'user-posts' => request()->header('X-Inertia') ? 
             fn () => Inertia::merge( Post::all()->map(function ($post) {
                 usleep(300000);
                 return [
                     'id' => $post->id,
-                    'title' => $post->title. ' test',
+                    'title' => $post->title. ' test'. rand(1, 100),
                     'content' => $post->content,
                 ];
             })) :
@@ -61,7 +61,7 @@ Route::get('/posts2', function () {
                 usleep(300000);
                 return [
                     'id' => $post->id,
-                    'title' => $post->title . ' test',
+                    'title' => $post->title . ' test'. rand(1, 100),
                     'content' => $post->content,
                 ];
             })),
