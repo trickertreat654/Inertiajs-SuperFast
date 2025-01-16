@@ -46,7 +46,8 @@ Route::get('/posts2', function () {
     return Inertia::render('Posts2',[
         'type' => request()->header('X-Inertia') ? 'vue' : 'ssr',
         'user' => request()->header('X-Inertia') ?  
-           fn () => User::first() :
+        //    fn () => tap(User::first(), usleep(300000)) :
+        fn () => User::first() :
             Inertia::defer(fn () => User::first(), 'nameGroup'),
         'user-posts' => request()->header('X-Inertia') ? 
             fn () => Inertia::merge( Post::all()->map(function ($post) {
