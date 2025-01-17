@@ -1,28 +1,53 @@
 <script setup>
-import { ref } from 'vue';
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import Dropdown from '@/Components/Dropdown.vue';
-import DropdownLink from '@/Components/DropdownLink.vue';
-import NavLink from '@/Components/NavLink.vue';
-import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
-import { Link, router, usePage } from '@inertiajs/vue3';
+import { ref, watch } from "vue";
+import ApplicationLogo from "@/Components/ApplicationLogo.vue";
+import Dropdown from "@/Components/Dropdown.vue";
+import DropdownLink from "@/Components/DropdownLink.vue";
+import NavLink from "@/Components/NavLink.vue";
+import ResponsiveNavLink from "@/Components/ResponsiveNavLink.vue";
+import { Link, router, usePage } from "@inertiajs/vue3";
+import { useDark, useToggle } from "@vueuse/core";
+import { useServerThrottle } from "@/Composables/ServerThrottle";
+
+const server = useServerThrottle();
 
 const page = usePage();
+const processing = ref(false);
+// watch(
+//     () => page.props.server.throttle_active,
+//     () => {
+//         processing.value = false;
+//     }
+// );
 
 const showingNavigationDropdown = ref(false);
 
-const handleOnBefore = (url, component, refresh= false) => {
+const showVideo = ref(false);
 
-    if(refresh) {
-     delete page.props.posts; // This will completely remove the slides property
-    } 
-   
+const handleOnBefore = (url, component) => {
     router.push({
         url: url,
         component: component,
         preserveState: true,
+        clearHistory: true,
     });
 };
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
+
+const toggleVideo = () => {
+    showVideo.value = !showVideo.value;
+};
+
+// const toggleServerThrottle = () => {
+//     router.visit(route("server.throttle"), {
+//         method: "post",
+//         async: true,
+//         data: {
+//             component: page.component,
+//         },
+//     });
+// };
 </script>
 
 <template>
@@ -42,49 +67,89 @@ const handleOnBefore = (url, component, refresh= false) => {
                                         class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200"
                                     />
                                 </Link>
-                                
                             </div>
 
                             <!-- Navigation Links -->
                             <div
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
-                               
-                                <Link   
-                                    prefetch 
-                                    preserve-state
-                                    
-                                    :onBefore="() => handleOnBefore(route('dashboard'), 'Dashboard')" 
-                                    :only="['user']"
+                                <Link
+                                    prefetch
+                                    async
+                                    :onBefore="
+                                        () =>
+                                            handleOnBefore(
+                                                route('dashboard'),
+                                                'Dashboard'
+                                            )
+                                    "
                                     class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700 focus:outline-none focus:text-gray-700 dark:focus:text-gray-300 focus:border-gray-300 dark:focus:border-gray-700 transition duration-150 ease-in-out"
                                     :href="route('dashboard')"
-                                    >
-                                Dashboard
-                                </Link >
-                                <Link   
-                                    prefetch 
-                                    preserve-state
-                                    
-                                    :onBefore="() => handleOnBefore(route('posts'), 'Posts', true)" 
-                                    :only="['user']"
+                                >
+                                    Dashboard
+                                </Link>
+                                <Link
                                     class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700 focus:outline-none focus:text-gray-700 dark:focus:text-gray-300 focus:border-gray-300 dark:focus:border-gray-700 transition duration-150 ease-in-out"
+                                    prefetch
+                                    preserve-state
+                                    async
+                                    :onBefore="
+                                        () =>
+                                            handleOnBefore(
+                                                route('posts'),
+                                                'Posts',
+                                                true
+                                            )
+                                    "
+                                    :except="['user']"
                                     :href="route('posts')"
-                                    >
-                                Posts
-                                </Link >
-                                <Link   
-                                    prefetch 
-                                    preserve-state
-                                    
-                                    :onBefore="() => handleOnBefore(route('posts2'), 'Posts2', true)" 
-                                    :only="['user']"
+                                >
+                                    Posts
+                                </Link>
+                                <Link
                                     class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700 focus:outline-none focus:text-gray-700 dark:focus:text-gray-300 focus:border-gray-300 dark:focus:border-gray-700 transition duration-150 ease-in-out"
-                                    :href="route('posts2')"
-                                    >
-                                Posts2
-                                </Link >
-
+                                    prefetch
+                                    :href="route('posts.better')"
+                                >
+                                    PostsBetter
+                                </Link>
+                                <Link
+                                    class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700 focus:outline-none focus:text-gray-700 dark:focus:text-gray-300 focus:border-gray-300 dark:focus:border-gray-700 transition duration-150 ease-in-out"
+                                    :href="route('posts.bad')"
+                                    progress
+                                >
+                                    PostsBad
+                                </Link>
                             </div>
+                        </div>
+                        <div
+                            class="h-16 justify-end space-x-8 w-full flex items-center"
+                        >
+                            <!-- <button
+                                @click="toggleDark()"
+                                class="inline-flex items-center rounded-md border border-transparent bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-gray-900 dark:bg-gray-200 dark:text-gray-800 dark:hover:bg-white dark:focus:bg-white dark:focus:ring-offset-gray-800 dark:active:bg-gray-300"
+                            >
+                                {{ isDark ? "Light" : "Dark" }}
+                            </button> -->
+                            <!-- <Link
+                                async
+                                method="put"
+                                :onBefore="toggleThrottle"
+                                :href="route('server.throttle')"
+                                class="inline-flex items-center rounded-md border border-transparent bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-gray-900 dark:bg-gray-200 dark:text-gray-800 dark:hover:bg-white dark:focus:bg-white dark:focus:ring-offset-gray-800 dark:active:bg-gray-300"
+                            >
+                                Server Throttle
+                                <span v-if="server" class="text-green-400">
+                                    -on</span
+                                >
+                                <span v-else class="text-red-400">- off</span>
+                            </Link> -->
+                            <button
+                                class="inline-flex items-center rounded-md border border-transparent bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-gray-900 dark:bg-gray-200 dark:text-gray-800 dark:hover:bg-white dark:focus:bg-white dark:focus:ring-offset-gray-800 dark:active:bg-gray-300"
+                                @click="toggleVideo()"
+                            >
+                                {{ showVideo ? "Hide" : "Show" }} Video
+                            </button>
                         </div>
 
                         <div class="hidden sm:ms-6 sm:flex sm:items-center">
@@ -229,10 +294,23 @@ const handleOnBefore = (url, component, refresh= false) => {
                 class="bg-white shadow dark:bg-gray-800"
                 v-if="$slots.header"
             >
-                <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+                <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <slot name="header" />
                 </div>
             </header>
+            <div v-show="showVideo" class="">
+                <!-- <iframe
+                    class="mx-auto"
+                    width="1080"
+                    height="500"
+                    src="https://www.youtube.com/embed/WSvFEsgS2pc?si=gqdZWOVstfkxA_DV"
+                    title="YouTube video player"
+                    frameborder="0"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    referrerpolicy="strict-origin-when-cross-origin"
+                    allowfullscreen
+                ></iframe> -->
+            </div>
 
             <!-- Page Content -->
             <main>
