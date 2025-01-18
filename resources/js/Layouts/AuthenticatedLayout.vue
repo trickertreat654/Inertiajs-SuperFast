@@ -31,7 +31,9 @@ const handleOnBefore = (url, component) => {
         preserveState: true,
         clearHistory: true,
     });
-    router.prefetch(url, { method: "get" });
+    if (url == "/dashboard") {
+        router.prefetch(url, { method: "get" });
+    }
 };
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
