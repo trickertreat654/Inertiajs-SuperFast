@@ -1,7 +1,7 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import { Head, Deferred, WhenVisible, router } from "@inertiajs/vue3";
-import { onMounted } from "vue";
+import { onMounted, ref, watch } from "vue";
 import { usePoll } from "@inertiajs/vue3";
 
 // usePoll(3000);
@@ -13,7 +13,17 @@ defineProps({
 
     type: String,
 });
+const isFetching = ref(false);
 
+watch(isFetching, (newValue) => {
+    console.log("Fetching started! Triggering logic...");
+    // Add your custom logic here
+});
+
+const whenFetching = () => {
+    console.log("Fetching started! Triggering logic...");
+    // Add your custom logic here};
+};
 defineOptions({
     layout: AuthenticatedLayout,
 });
@@ -23,7 +33,7 @@ defineOptions({
     <!-- <Deferred data="server">
         <template #fallback>
             <span class="text-red-400"
-                >Server-Loading...</span
+            >Server-Loading...</span
             >
         </template>
         {{ server }}
@@ -92,7 +102,16 @@ defineOptions({
                         <p class="pl-6 pt-6 text-2xl text-gray-100">
                             Delay From Database: 3s
                         </p>
-                        <WhenVisible data="user">
+                        <WhenVisible
+                            :params="{
+                                onPrefetched: whenFetching,
+                                only: ['user'],
+                                replace: true,
+                                async: true,
+                                preserveUrl: true,
+                            }"
+                            data="user"
+                        >
                             <template #fallback>
                                 <div class="p-6 text-xl text-red-400">
                                     Username: Loading...
@@ -112,7 +131,15 @@ defineOptions({
                         <p class="pl-6 pt-6 text-2xl text-gray-100">
                             Delay From Database: 7s
                         </p>
-                        <WhenVisible data="user2">
+                        <WhenVisible
+                            :params="{
+                                preserveUrl: true,
+                                replace: true,
+                                only: ['user2'],
+                                async: true,
+                            }"
+                            data="user2"
+                        >
                             <template #fallback>
                                 <div class="p-6 text-xl text-red-400">
                                     Username2: Loading...
@@ -135,7 +162,15 @@ defineOptions({
                 <div
                     class="overflow-hidden bg-gray-800 shadow-sm sm:rounded-lg dark:bg-gray-800"
                 >
-                    <WhenVisible :data="['user-posts']">
+                    <WhenVisible
+                        :params="{
+                            preserveUrl: true,
+                            replace: true,
+                            only: ['user-posts'],
+                            async: true,
+                        }"
+                        :data="['user-posts']"
+                    >
                         <template #fallback>
                             <div class="p-6 text-lg text-red-400">
                                 <div>Posts-Loading...</div>

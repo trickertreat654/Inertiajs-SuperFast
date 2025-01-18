@@ -53,7 +53,7 @@ const spaLink = (url, component) => {
         url: url,
         component: component,
         preserveState: true,
-        clearHistory: true,
+        clearHistory: false,
     });
     if (url == "/dashboard") {
         // router.prefetch(url, { method: "get" }, { cacheFor: 10000 });
