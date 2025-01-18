@@ -65,11 +65,13 @@ const server = useServerThrottle();
                         async
                         method="put"
                         :href="route('server.throttle')"
-                        class="inline-flex items-center rounded-md border border-transparent bg-gray-200 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-800 transition duration-150 ease-in-out hover:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-white dark:bg-gray-200 dark:text-gray-800 dark:hover:bg-white dark:focus:bg-white dark:focus:ring-offset-gray-800 dark:active:bg-gray-300"
+                        class="inline-flex items-center rounded-md border border-transparent bg-gray-200 px-4 py-2 text-xs font-semibold tracking-widest text-gray-800 transition duration-150 ease-in-out hover:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-white dark:bg-gray-200 dark:text-gray-800 dark:hover:bg-white dark:focus:bg-white dark:focus:ring-offset-gray-800 dark:active:bg-gray-300"
                     >
-                        Server Throttle
-                        <span v-if="server" class="text-green-400"> -on</span>
-                        <span v-else class="text-red-400">- off</span>
+                        SERVER THROTTLE: 2s
+                        <span v-if="server" class="text-md text-green-600">
+                            --ON</span
+                        >
+                        <span v-else class="text-red-600">--OFF</span>
                     </Link>
                     <!-- <Link
                         async

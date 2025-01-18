@@ -19,7 +19,7 @@ Route::get('/', function () {
 
 Route::put('/server.throttle', function () {
 
-    sleep(2);
+    // sleep(2);
     $server = Server::first();
 
     $server->throttle_active = !$server->throttle_active;
