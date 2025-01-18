@@ -58,7 +58,7 @@ defineProps({
                         Delay on Server: 2s
                     </p>
                     <div
-                        class="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800"
+                        class="overflow-hidden bg-gray-800 shadow-sm sm:rounded-lg dark:bg-gray-800"
                     >
                         <div
                             v-for="post in userPostsBad"

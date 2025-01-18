@@ -37,7 +37,7 @@ class HandleInertiaRequests extends Middleware
                 'user' => $request->user(),
             ],
             'custom' => [
-                'server' => \App\Models\Server::first()->throttle_active,
+                'server' => Inertia::always(\App\Models\Server::first()->throttle_active),
             ],
             'ziggy' => fn () => [
                 ...(new Ziggy)->toArray(),

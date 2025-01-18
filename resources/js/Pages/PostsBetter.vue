@@ -77,7 +77,7 @@ defineOptions({
                     Delay on Server: 5s
                 </p>
                 <div
-                    class="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800"
+                    class="overflow-hidden bg-gray-800 shadow-sm sm:rounded-lg dark:bg-gray-800"
                 >
                     <Deferred :data="['user-posts-better']">
                         <template #fallback>

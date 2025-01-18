@@ -92,7 +92,12 @@ defineOptions({
                         <p class="pl-6 pt-6 text-2xl text-gray-100">
                             Delay on Server: 3s
                         </p>
-                        <WhenVisible data="user">
+                        <WhenVisible
+                            :params="{
+                                cachefor: 30,
+                            }"
+                            data="user"
+                        >
                             <template #fallback>
                                 <div class="p-6 text-xl text-red-400">
                                     Username: Loading...
@@ -133,7 +138,7 @@ defineOptions({
                     Delay on Server: 5s -- Prefetched
                 </p>
                 <div
-                    class="overflow-hidden bg-white shadow-sm sm:rounded-lg dark:bg-gray-800"
+                    class="overflow-hidden bg-gray-800 shadow-sm sm:rounded-lg dark:bg-gray-800"
                 >
                     <Deferred :data="['user-posts']">
                         <template #fallback>
