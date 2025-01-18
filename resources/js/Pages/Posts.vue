@@ -90,7 +90,7 @@ defineOptions({
                 <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div class="shadow-sm sm:rounded-lg bg-gray-800">
                         <p class="pl-6 pt-6 text-2xl text-gray-100">
-                            Delay on Server: 3s
+                            Delay From Database: 3s
                         </p>
                         <WhenVisible data="user">
                             <template #fallback>
@@ -110,7 +110,7 @@ defineOptions({
                 <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div class="shadow-sm sm:rounded-lg bg-gray-800">
                         <p class="pl-6 pt-6 text-2xl text-gray-100">
-                            Delay on Server: 7s
+                            Delay From Database: 7s
                         </p>
                         <WhenVisible data="user2">
                             <template #fallback>
@@ -130,7 +130,7 @@ defineOptions({
         <div class="py-12">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
                 <p class="pl-1 py-6 text-2xl text-gray-100">
-                    Delay on Server: 5s -- Prefetched
+                    Delay From Database: 5s
                 </p>
                 <div
                     class="overflow-hidden bg-gray-800 shadow-sm sm:rounded-lg dark:bg-gray-800"

@@ -9,6 +9,10 @@ import { Link, router, usePage } from "@inertiajs/vue3";
 import { useDark, useToggle } from "@vueuse/core";
 import { useServerThrottle } from "@/Composables/ServerThrottle";
 
+// import { usePoll } from "@inertiajs/vue3";
+
+// usePoll(3000);
+
 const server = useServerThrottle();
 
 const page = usePage();
@@ -53,7 +57,7 @@ const spaLink = (url, component) => {
     });
     if (url == "/dashboard") {
         // router.prefetch(url, { method: "get" }, { cacheFor: 10000 });
-        router.prefetch(url, { method: "get" }, { cacheFor: "1s" });
+        // router.prefetch(url, { method: "get" }, { cacheFor: "1s" });
         console.log("prefetch function completed");
     }
 };
@@ -90,7 +94,7 @@ const spaLink = (url, component) => {
                             <div
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
-                                <Link
+                                <!-- <Link
                                     async
                                     :onBefore="
                                         () =>
@@ -123,20 +127,6 @@ const spaLink = (url, component) => {
                                     :href="route('posts')"
                                 >
                                     Posts
-                                </Link>
-                                <!-- <Link
-                                    class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-400 hover:text-gray-300 hover:border-gray-700 focus:outline-none focus:text-gray-300 focus:border-gray-700 transition duration-150 ease-in-out"
-                                    prefetch
-                                    :href="route('posts.better')"
-                                >
-                                    PostsBetter
-                                </Link>
-                                <Link
-                                    class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-400 hover:text-gray-300 hover:border-gray-700 focus:outline-none focus:text-gray-300 focus:border-gray-700 transition duration-150 ease-in-out"
-                                    :href="route('posts.bad')"
-                                    progress
-                                >
-                                    PostsBad
                                 </Link> -->
                                 <button
                                     class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-400 hover:text-gray-300 hover:border-gray-700 focus:outline-none focus:text-gray-300 focus:border-gray-700 transition duration-150 ease-in-out"
@@ -150,6 +140,20 @@ const spaLink = (url, component) => {
                                 >
                                     Posts
                                 </button>
+                                <Link
+                                    class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-400 hover:text-gray-300 hover:border-gray-700 focus:outline-none focus:text-gray-300 focus:border-gray-700 transition duration-150 ease-in-out"
+                                    prefetch
+                                    :href="route('posts.better')"
+                                >
+                                    PostsBetter
+                                </Link>
+                                <Link
+                                    class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-400 hover:text-gray-300 hover:border-gray-700 focus:outline-none focus:text-gray-300 focus:border-gray-700 transition duration-150 ease-in-out"
+                                    :href="route('posts.bad')"
+                                    progress
+                                >
+                                    PostsBad
+                                </Link>
                             </div>
                         </div>
                         <div
@@ -328,17 +332,17 @@ const spaLink = (url, component) => {
                 </div>
             </header>
             <div v-show="showVideo" class="">
-                <!-- <iframe
+                <iframe
                     class="mx-auto"
-                    width="1080"
-                    height="500"
-                    src="https://www.youtube.com/embed/WSvFEsgS2pc?si=gqdZWOVstfkxA_DV"
+                    width="560"
+                    height="315"
+                    src="https://www.youtube.com/embed/Cifkb-ZVps4?si=cm_tRF-b1cL4jHKc"
                     title="YouTube video player"
                     frameborder="0"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerpolicy="strict-origin-when-cross-origin"
                     allowfullscreen
-                ></iframe> -->
+                ></iframe>
             </div>
 
             <!-- Page Content -->
