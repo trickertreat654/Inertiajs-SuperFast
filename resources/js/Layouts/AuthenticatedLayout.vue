@@ -25,6 +25,7 @@ const showingNavigationDropdown = ref(false);
 const showVideo = ref(false);
 
 const handleOnBefore = (url, component) => {
+    console.log(url);
     router.push({
         url: url,
         component: component,
@@ -79,7 +80,7 @@ const toggleVideo = () => {
                                     :onBefore="
                                         () =>
                                             handleOnBefore(
-                                                route('dashboard'),
+                                                '/dashboard',
                                                 'Dashboard'
                                             )
                                     "
