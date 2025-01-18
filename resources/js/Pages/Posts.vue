@@ -4,7 +4,7 @@ import { Head, Deferred, WhenVisible, router } from "@inertiajs/vue3";
 import { onMounted } from "vue";
 import { usePoll } from "@inertiajs/vue3";
 
-// usePoll(10000)
+// usePoll(3000);
 
 defineProps({
     user: Object,
@@ -92,12 +92,7 @@ defineOptions({
                         <p class="pl-6 pt-6 text-2xl text-gray-100">
                             Delay on Server: 3s
                         </p>
-                        <WhenVisible
-                            :params="{
-                                cachefor: 30,
-                            }"
-                            data="user"
-                        >
+                        <WhenVisible data="user">
                             <template #fallback>
                                 <div class="p-6 text-xl text-red-400">
                                     Username: Loading...
@@ -140,7 +135,7 @@ defineOptions({
                 <div
                     class="overflow-hidden bg-gray-800 shadow-sm sm:rounded-lg dark:bg-gray-800"
                 >
-                    <Deferred :data="['user-posts']">
+                    <WhenVisible :data="['user-posts']">
                         <template #fallback>
                             <div class="p-6 text-lg text-red-400">
                                 <div>Posts-Loading...</div>
@@ -152,7 +147,7 @@ defineOptions({
                         >
                             {{ post.title }}
                         </div>
-                    </Deferred>
+                    </WhenVisible>
                 </div>
             </div>
         </div>

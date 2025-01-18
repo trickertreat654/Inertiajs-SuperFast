@@ -8,9 +8,9 @@ defineOptions({
     layout: AuthenticatedLayout,
 });
 
-defineProps({
-    server: Number,
-});
+// defineProps({
+//     server: Number,
+// });
 
 const flushCache = () => {
     router.flushAll();

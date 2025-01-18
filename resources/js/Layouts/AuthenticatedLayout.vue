@@ -33,14 +33,29 @@ const handleOnBefore = (url, component) => {
         clearHistory: true,
     });
     if (url == "/dashboard") {
-        router.prefetch(url, { method: "get" });
+        // router.prefetch(url, { method: "get" }, { cacheFor: 10000 });
     }
+    // router.prefetch(url, { method: "get" }, { cacheFor: "1s" });
 };
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
 
 const toggleVideo = () => {
     showVideo.value = !showVideo.value;
+};
+
+const spaLink = (url, component) => {
+    router.push({
+        url: url,
+        component: component,
+        preserveState: true,
+        clearHistory: true,
+    });
+    if (url == "/dashboard") {
+        // router.prefetch(url, { method: "get" }, { cacheFor: 10000 });
+        router.prefetch(url, { method: "get" }, { cacheFor: "1s" });
+        console.log("prefetch function completed");
+    }
 };
 
 // const toggleServerThrottle = () => {
@@ -109,7 +124,7 @@ const toggleVideo = () => {
                                 >
                                     Posts
                                 </Link>
-                                <Link
+                                <!-- <Link
                                     class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-400 hover:text-gray-300 hover:border-gray-700 focus:outline-none focus:text-gray-300 focus:border-gray-700 transition duration-150 ease-in-out"
                                     prefetch
                                     :href="route('posts.better')"
@@ -122,13 +137,18 @@ const toggleVideo = () => {
                                     progress
                                 >
                                     PostsBad
-                                </Link>
+                                </Link> -->
                                 <button
                                     class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-400 hover:text-gray-300 hover:border-gray-700 focus:outline-none focus:text-gray-300 focus:border-gray-700 transition duration-150 ease-in-out"
-                                    :href="route('posts.bad')"
-                                    progress
+                                    @click="spaLink('/dashboard', 'Dashboard')"
                                 >
-                                    router
+                                    Dashboard
+                                </button>
+                                <button
+                                    class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-400 hover:text-gray-300 hover:border-gray-700 focus:outline-none focus:text-gray-300 focus:border-gray-700 transition duration-150 ease-in-out"
+                                    @click="spaLink('/posts', 'Posts')"
+                                >
+                                    Posts
                                 </button>
                             </div>
                         </div>
@@ -144,7 +164,6 @@ const toggleVideo = () => {
                             <!-- <Link
                                 async
                                 method="put"
-                                :onBefore="toggleThrottle"
                                 :href="route('server.throttle')"
                                 class="inline-flex items-center rounded-md border border-transparent bg-gray-800 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-white transition duration-150 ease-in-out hover:bg-gray-700 focus:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-gray-900 dark:bg-gray-200 dark:text-gray-800 dark:hover:bg-white dark:focus:bg-white dark:focus:ring-offset-gray-800 dark:active:bg-gray-300"
                             >
