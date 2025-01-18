@@ -31,6 +31,7 @@ const handleOnBefore = (url, component) => {
         preserveState: true,
         clearHistory: true,
     });
+    router.prefetch(url, { method: "get" });
 };
 const isDark = useDark();
 const toggleDark = useToggle(isDark);
@@ -72,7 +73,6 @@ const toggleVideo = () => {
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
                                 <Link
-                                    :prefetch="['click', 'hover']"
                                     async
                                     :onBefore="
                                         () =>
