@@ -24,12 +24,16 @@ Route::put('/server.throttle', function () {
 
     $server->throttle_active = !$server->throttle_active;
     $server->save();
+
+    request()->validate([
+        'throttle_active' => 'required|boolean',
+    ]);
     // $url = request()->header('referer');
     // Log::info('Request URL: ' . $url);
-    // return redirect()->back();
-    return Inertia::share('custom', [
-        'server' => $server->throttle_active,
-    ]);
+    return to_route('dashboard');
+    // return Inertia::share('custom', [
+    //     'server' => $server->throttle_active,
+    // ]);
 
 })->middleware(['auth', 'verified'])->name('server.throttle');
 
@@ -70,31 +74,46 @@ Route::get('/posts', function () {
         sleep(2);
     };
     return Inertia::render('Posts',[
-        'user' => request()->header('X-Inertia') ?  
-           Inertia::lazy(fn () => tap(User::first(), function (User $user) { 
-            usleep(3000000);
-        })) :
-            Inertia::defer(fn () => User::first(), 'userGroup1'),
+        'user' => 
+        // request()->header('X-Inertia') ?  
+        //    Inertia::lazy(fn () => tap(User::first(), function (User $user) { 
+        //     usleep(3000000);
+        // })) 
+        // :
+            Inertia::defer(fn () => tap(User::first(), function (User $user) {
+                usleep(3000000);
+            }), 'userGroup1'),
 
-        'user2' => request()->header('X-Inertia') ?  
-           Inertia::lazy(fn () =>tap(User::first(), function (User $user) { 
-            usleep(7000000);
-        })) :
+        'user2' => 
+        // request()->header('X-Inertia') ?  
+        //    Inertia::lazy(fn () =>tap(User::first(), function (User $user) { 
+        //     usleep(7000000);
+        // })) 
+        // :
             Inertia::defer(fn () =>tap(User::first(), function (User $user) { 
-                usleep(2000000);
+                usleep(7000000);
             }), 'userGroup2'),
 
-        'user-posts' => request()->header('X-Inertia') ? 
-            fn () => Inertia::merge( Post::all()->map(function ($post) {
-                usleep(500000);
-                return [
-                    'id' => $post->id,
-                    'title' => $post->title. '-ServerTag-'. rand(1, 100),
-                    'content' => $post->content,
-                ];
-            })) :
+        'user-posts' => 
+        // request()->header('X-Inertia') ? 
+        //     fn () => Inertia::defer(fn () => Post::all()->map(function ($post) {
+        //         usleep(500000);
+        //         return [
+        //             'id' => $post->id,
+        //             'title' => $post->title. '-ServerTag-'. rand(1, 100),
+        //             'content' => $post->content,
+        //         ];
+        //     }), 'postsGroup1') :
+            // fn () => Inertia::merge( Post::all()->map(function ($post) {
+            //     usleep(500000);
+            //     return [
+            //         'id' => $post->id,
+            //         'title' => $post->title. '-ServerTag-'. rand(1, 100),
+            //         'content' => $post->content,
+            //     ];
+            // })) :
             Inertia::defer( fn () => Post::all()->map(function ($post) {
-                usleep(1000000);
+                usleep(500000);
                 return [
                     'id' => $post->id,
                     'title' => $post->title . '-ServerTag-'. rand(1, 100),
@@ -127,24 +146,29 @@ Route::get('/posts.better', function () {
     ]);
 })->middleware(['auth', 'verified'])->name('posts.better');
 
+// Route::get('/posts.bad', function () {
+//     return Inertia::render('PostsBad',[
+//         'user-bad' => tap(User::first(), function (User $user) { 
+//             usleep(1000000);
+//         }),
+//         'user2-bad' => tap(User::first(), function (User $user) { 
+//             usleep(3000000);
+//         }),
+//         'user-posts-bad' => Post::all()->map(function ($post) {
+//                 usleep(200000);
+//                 return [
+//                     'id' => $post->id,
+//                     'title' => $post->title. ' test'. rand(1, 100),
+//                     'content' => $post->content,
+//                 ];
+//             } ),
+//     ]);
+// })->middleware(['auth', 'verified'])->name('posts.bad');
+
 Route::get('/posts.bad', function () {
-    return Inertia::render('PostsBad',[
-        'user-bad' => tap(User::first(), function (User $user) { 
-            usleep(1000000);
-        }),
-        'user2-bad' => tap(User::first(), function (User $user) { 
-            usleep(3000000);
-        }),
-        'user-posts-bad' => Post::all()->map(function ($post) {
-                usleep(200000);
-                return [
-                    'id' => $post->id,
-                    'title' => $post->title. ' test'. rand(1, 100),
-                    'content' => $post->content,
-                ];
-            } ),
-    ]);
+    return Inertia::render('PostsBad');
 })->middleware(['auth', 'verified'])->name('posts.bad');
+
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

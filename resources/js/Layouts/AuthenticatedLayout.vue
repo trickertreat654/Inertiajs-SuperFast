@@ -62,6 +62,41 @@ const spaLink = (url, component) => {
     }
 };
 
+function prefetchUsers(url, component) {
+    // router.push({
+    //     url: url,
+    //     component: component,
+    //     preserveState: true,
+    //     clearHistory: false,
+    // });
+
+    router.replace({
+        url: url,
+        component: component,
+        preserveState: true,
+        clearHistory: false,
+    });
+
+    // if (page.props.userPosts) {
+    //     console.log(page.props.userPosts);
+    // }
+    if (component == "Posts") {
+        // router.prefetch(url, { method: "get" }, { cacheFor: 10000 });
+
+        router.prefetch(
+            url,
+            {
+                method: "get",
+                async: true,
+                onPrefetching: () => {
+                    // router.reload({ only: ["user", "suer2"] });
+                },
+            },
+            { cacheFor: "2m" }
+        );
+    }
+}
+
 // const toggleServerThrottle = () => {
 //     router.visit(route("server.throttle"), {
 //         method: "post",
@@ -130,13 +165,15 @@ const spaLink = (url, component) => {
                                 </Link> -->
                                 <button
                                     class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-400 hover:text-gray-300 hover:border-gray-700 focus:outline-none focus:text-gray-300 focus:border-gray-700 transition duration-150 ease-in-out"
-                                    @click="spaLink('/dashboard', 'Dashboard')"
+                                    @click="
+                                        prefetchUsers('/dashboard', 'Dashboard')
+                                    "
                                 >
                                     Dashboard
                                 </button>
                                 <button
                                     class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-400 hover:text-gray-300 hover:border-gray-700 focus:outline-none focus:text-gray-300 focus:border-gray-700 transition duration-150 ease-in-out"
-                                    @click="spaLink('/posts', 'Posts')"
+                                    @click="prefetchUsers('/posts', 'Posts')"
                                 >
                                     Posts
                                 </button>
@@ -332,7 +369,7 @@ const spaLink = (url, component) => {
                 </div>
             </header>
             <div v-show="showVideo" class="">
-                <iframe
+                <!-- <iframe
                     class="mx-auto"
                     width="560"
                     height="315"
@@ -342,7 +379,7 @@ const spaLink = (url, component) => {
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerpolicy="strict-origin-when-cross-origin"
                     allowfullscreen
-                ></iframe>
+                ></iframe> -->
             </div>
 
             <!-- Page Content -->

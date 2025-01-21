@@ -16,15 +16,21 @@ const flushCache = () => {
     router.flushAll();
 };
 
-const toggleThrottle = () => {
-    router.visit(route("server.throttle"), {
-        method: "put",
-        preserveState: false,
-        async: true,
-        showProgress: true,
-    });
-    // page.props.server = !page.props.server;
-};
+// const toggleThrottle = () => {
+//     router.visit(
+//         "/server.throttle",
+//         {
+//             method: "get",
+
+//             // async: true,
+//             showProgress: true,
+//         },
+//         {
+//             cacheFor: "0s",
+//         }
+//     );
+//     // page.props.server = !page.props.server;
+// };
 
 const server = useServerThrottle();
 
@@ -54,13 +60,13 @@ const server = useServerThrottle();
                     class="p-6 flex space-x-4 text-gray-900 dark:text-gray-100"
                 >
                     <!-- You're logged in! -->
-                    <button
+                    <!-- <button
                         class="inline-flex items-center rounded-md border border-transparent bg-gray-200 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-800 transition duration-150 ease-in-out hover:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-white dark:bg-gray-200 dark:text-gray-800 dark:hover:bg-white dark:focus:bg-white dark:focus:ring-offset-gray-800 dark:active:bg-gray-300"
                         @click="flushCache"
                     >
                         Flush Cache
-                    </button>
-                    <button
+                    </button> -->
+                    <!-- <button
                         @click="toggleThrottle"
                         class="inline-flex items-center rounded-md border border-transparent bg-gray-200 px-4 py-2 text-xs font-semibold tracking-widest text-gray-800 transition duration-150 ease-in-out hover:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-white dark:bg-gray-200 dark:text-gray-800 dark:hover:bg-white dark:focus:bg-white dark:focus:ring-offset-gray-800 dark:active:bg-gray-300"
                     >
@@ -69,11 +75,10 @@ const server = useServerThrottle();
                             --ON</span
                         >
                         <span v-else class="text-red-600">--OFF</span>
-                    </button>
-                    <!-- <Link
-                        async
+                    </button> -->
+                    <Link
                         method="put"
-                        :href="route('server.throttle')"
+                        href="/server.throttle"
                         class="inline-flex items-center rounded-md border border-transparent bg-gray-200 px-4 py-2 text-xs font-semibold tracking-widest text-gray-800 transition duration-150 ease-in-out hover:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-white dark:bg-gray-200 dark:text-gray-800 dark:hover:bg-white dark:focus:bg-white dark:focus:ring-offset-gray-800 dark:active:bg-gray-300"
                     >
                         SERVER THROTTLE: 2s
@@ -81,7 +86,7 @@ const server = useServerThrottle();
                             --ON</span
                         >
                         <span v-else class="text-red-600">--OFF</span>
-                    </Link> -->
+                    </Link>
                     <!-- <Link
                         async
                         method="post"

@@ -102,16 +102,7 @@ defineOptions({
                         <p class="pl-6 pt-6 text-2xl text-gray-100">
                             Delay From Database: 3s
                         </p>
-                        <WhenVisible
-                            :params="{
-                                onPrefetched: whenFetching,
-                                only: ['user'],
-                                replace: true,
-                                async: true,
-                                preserveUrl: true,
-                            }"
-                            data="user"
-                        >
+                        <Deferred data="user">
                             <template #fallback>
                                 <div class="p-6 text-xl text-red-400">
                                     Username: Loading...
@@ -120,7 +111,7 @@ defineOptions({
                             <div class="p-6 text-xl text-green-400">
                                 Username: {{ user.name }}
                             </div>
-                        </WhenVisible>
+                        </Deferred>
                     </div>
                 </div>
             </div>
@@ -131,15 +122,7 @@ defineOptions({
                         <p class="pl-6 pt-6 text-2xl text-gray-100">
                             Delay From Database: 7s
                         </p>
-                        <WhenVisible
-                            :params="{
-                                preserveUrl: true,
-                                replace: true,
-                                only: ['user2'],
-                                async: true,
-                            }"
-                            data="user2"
-                        >
+                        <Deferred data="user2">
                             <template #fallback>
                                 <div class="p-6 text-xl text-red-400">
                                     Username2: Loading...
@@ -148,7 +131,7 @@ defineOptions({
                             <div class="p-6 text-xl text-green-400">
                                 Username2: {{ user2.name }}
                             </div>
-                        </WhenVisible>
+                        </Deferred>
                     </div>
                 </div>
             </div>
@@ -162,15 +145,7 @@ defineOptions({
                 <div
                     class="overflow-hidden bg-gray-800 shadow-sm sm:rounded-lg dark:bg-gray-800"
                 >
-                    <WhenVisible
-                        :params="{
-                            preserveUrl: true,
-                            replace: true,
-                            only: ['user-posts'],
-                            async: true,
-                        }"
-                        :data="['user-posts']"
-                    >
+                    <Deferred :data="['user-posts']">
                         <template #fallback>
                             <div class="p-6 text-lg text-red-400">
                                 <div>Posts-Loading...</div>
@@ -182,7 +157,7 @@ defineOptions({
                         >
                             {{ post.title }}
                         </div>
-                    </WhenVisible>
+                    </Deferred>
                 </div>
             </div>
         </div>
