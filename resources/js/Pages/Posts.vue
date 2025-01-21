@@ -4,9 +4,19 @@ import { Head, Deferred, WhenVisible, router } from "@inertiajs/vue3";
 import { onMounted, ref, watch } from "vue";
 import { usePoll } from "@inertiajs/vue3";
 
-// usePoll(3000);
+// usePoll(10000, {
+//     only: ["user"],
+// });
 
-defineProps({
+// usePoll(10000, {
+//     only: ["user2"],
+// });
+
+// usePoll(10000, {
+//     only: ["user-posts"],
+// });
+
+const props = defineProps({
     user: Object,
     user2: Object,
     userPosts: Array,
@@ -14,6 +24,27 @@ defineProps({
     type: String,
 });
 const isFetching = ref(false);
+
+onMounted(() => {
+    if (!props.user2 || props.user2 == null) {
+        router.reload({
+            only: ["user2"],
+            async: true,
+        });
+    }
+    if (!props.user || props.user == null) {
+        router.reload({
+            only: ["user"],
+            async: true,
+        });
+    }
+    if (!props.userPosts || props.userPosts == null) {
+        router.reload({
+            only: ["user-posts"],
+            async: true,
+        });
+    }
+});
 
 watch(isFetching, (newValue) => {
     console.log("Fetching started! Triggering logic...");

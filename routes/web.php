@@ -3,6 +3,7 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request;
 use App\Models\Post;
 use Inertia\Inertia;
 use App\Models\User;
@@ -19,30 +20,59 @@ Route::get('/', function () {
 
 Route::put('/server.throttle', function () {
 
-    // sleep(2);
+    sleep(2);
     $server = Server::first();
 
     $server->throttle_active = !$server->throttle_active;
     $server->save();
 
-    request()->validate([
-        'throttle_active' => 'required|boolean',
-    ]);
+    
     // $url = request()->header('referer');
     // Log::info('Request URL: ' . $url);
     return to_route('dashboard');
     // return Inertia::share('custom', [
-    //     'server' => $server->throttle_active,
-    // ]);
-
-})->middleware(['auth', 'verified'])->name('server.throttle');
-
-Route::get('/dashboard', function () {
+        //     'server' => $server->throttle_active,
+        // ]);
+        
+    })->middleware(['auth', 'verified'])->name('server.throttle');
     
-    return Inertia::render('Dashboard', [
-        'server' => Inertia::always(Server::first()->throttle_active),
-    ]);
+    Route::get('/dashboard', function (Request $request) {
+
+
+        
+
+
+        
+
+        return Inertia::render('Dashboard',[
+            
+
+                    'server' => Inertia::always(Server::first()->throttle_active),
+    
+                'type' => request()->header('X-Inertia') ? 'vue' : 'ssr',
+        ]);
+
+        
+       
+    
+        // return Inertia::render('Dashboard', [
+            //     'server' => Inertia::always(Server::first()->throttle_active),
+    // ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+
+Route::post('/posts', function (Request $request) {
+
+    $request->validate([
+        'title' => 'required',
+    ]);
+    Post::create([
+        'title' => $request->title,
+        'content' => 'test',
+    ]);
+    // return Inertia::render('Posts');
+    return redirect()->back();
+})->middleware(['auth', 'verified'])->name('posts.store');
 
 Route::get('/posts3', function () {
     return Inertia::render('Posts3',[

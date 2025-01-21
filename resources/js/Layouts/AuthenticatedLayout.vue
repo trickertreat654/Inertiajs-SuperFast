@@ -82,18 +82,17 @@ function prefetchUsers(url, component) {
     // }
     if (component == "Posts") {
         // router.prefetch(url, { method: "get" }, { cacheFor: 10000 });
-
-        router.prefetch(
-            url,
-            {
-                method: "get",
-                async: true,
-                onPrefetching: () => {
-                    // router.reload({ only: ["user", "suer2"] });
-                },
-            },
-            { cacheFor: "2m" }
-        );
+        // router.prefetch(
+        //     url,
+        //     {
+        //         method: "get",
+        //         async: true,
+        //         onPrefetching: () => {
+        //             // router.reload({ only: ["user", "suer2"] });
+        //         },
+        //     },
+        //     { cacheFor: "10s" }
+        // );
     }
 }
 
@@ -369,7 +368,7 @@ function prefetchUsers(url, component) {
                 </div>
             </header>
             <div v-show="showVideo" class="">
-                <!-- <iframe
+                <iframe
                     class="mx-auto"
                     width="560"
                     height="315"
@@ -379,7 +378,7 @@ function prefetchUsers(url, component) {
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     referrerpolicy="strict-origin-when-cross-origin"
                     allowfullscreen
-                ></iframe> -->
+                ></iframe>
             </div>
 
             <!-- Page Content -->

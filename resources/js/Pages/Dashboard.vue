@@ -1,6 +1,6 @@
 <script setup>
 import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
-import { Head, router, Link, usePage } from "@inertiajs/vue3";
+import { Head, router, Link, usePage, useForm } from "@inertiajs/vue3";
 import { watch, ref, onMounted } from "vue";
 import { useServerThrottle } from "@/Composables/ServerThrottle";
 
@@ -14,6 +14,28 @@ defineOptions({
 
 const flushCache = () => {
     router.flushAll();
+};
+const page = usePage();
+
+const form = useForm({
+    title: null,
+});
+
+const submit = () => {
+    form.post("/posts", {
+        async: true,
+        only: ["bobo"],
+        onSuccess: () => {
+            delete page.props.user2;
+            delete page.props.userPosts;
+            router.replace({
+                url: "/posts",
+                component: "Posts",
+                preserveState: true,
+                clearHistory: false,
+            });
+        },
+    });
 };
 
 // const toggleThrottle = () => {
@@ -48,6 +70,7 @@ const server = useServerThrottle();
     <div class="shadow bg-gray-800">
         <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
             <h2 class="text-3xl font-semibold text-gray-200">Dashboard</h2>
+            {{ page.props }}
         </div>
     </div>
 
@@ -60,12 +83,12 @@ const server = useServerThrottle();
                     class="p-6 flex space-x-4 text-gray-900 dark:text-gray-100"
                 >
                     <!-- You're logged in! -->
-                    <!-- <button
+                    <button
                         class="inline-flex items-center rounded-md border border-transparent bg-gray-200 px-4 py-2 text-xs font-semibold uppercase tracking-widest text-gray-800 transition duration-150 ease-in-out hover:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-white dark:bg-gray-200 dark:text-gray-800 dark:hover:bg-white dark:focus:bg-white dark:focus:ring-offset-gray-800 dark:active:bg-gray-300"
                         @click="flushCache"
                     >
                         Flush Cache
-                    </button> -->
+                    </button>
                     <!-- <button
                         @click="toggleThrottle"
                         class="inline-flex items-center rounded-md border border-transparent bg-gray-200 px-4 py-2 text-xs font-semibold tracking-widest text-gray-800 transition duration-150 ease-in-out hover:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-white dark:bg-gray-200 dark:text-gray-800 dark:hover:bg-white dark:focus:bg-white dark:focus:ring-offset-gray-800 dark:active:bg-gray-300"
@@ -79,6 +102,12 @@ const server = useServerThrottle();
                     <Link
                         method="put"
                         href="/server.throttle"
+                        async
+                        :except="['user']"
+                        :data="{
+                            server: !server,
+                        }"
+                        :onFinish="(page) => console.log(page)"
                         class="inline-flex items-center rounded-md border border-transparent bg-gray-200 px-4 py-2 text-xs font-semibold tracking-widest text-gray-800 transition duration-150 ease-in-out hover:bg-white focus:bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 active:bg-white dark:bg-gray-200 dark:text-gray-800 dark:hover:bg-white dark:focus:bg-white dark:focus:ring-offset-gray-800 dark:active:bg-gray-300"
                     >
                         SERVER THROTTLE: 2s
@@ -87,6 +116,17 @@ const server = useServerThrottle();
                         >
                         <span v-else class="text-red-600">--OFF</span>
                     </Link>
+
+                    <form @submit.prevent="submit">
+                        <label for="server">Server</label>
+                        <input
+                            v-model="form.title"
+                            type="text"
+                            name="server"
+                            class="border-gray-300 text-black focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50 rounded-md shadow-sm"
+                        />
+                        <button>submit</button>
+                    </form>
                     <!-- <Link
                         async
                         method="post"
